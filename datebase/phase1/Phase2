@@ -1,0 +1,119 @@
+CREATE PROCEDURE AddMenuItem
+	@name varchar(255),
+	@category varchar(255),
+	@price float
+AS
+begin
+	 insert into Menu (
+	 name,
+	 category,
+	 price)
+	 values (@name,
+	 @category,
+	 @price)
+end;
+
+
+
+
+CREATE PROCEDURE CreateOrder
+	@tableID INT,
+	@menuID INT,
+	@staffID INT,
+	@orderDate date,
+	@status varchar(255)
+AS
+begin
+	 insert into Orders  (
+	 tableID,
+	 menuID,
+	 staffID,
+	 orderDate,
+	 status)
+	 values (@tableID,
+	 @menuID,
+	 @staffID,
+	 @orderDate,
+	 @status)
+end;
+
+CREATE ROLE Admin;
+go
+
+CREATE ROLE Manager;
+go
+
+CREATE ROLE Staff;
+go
+
+//\\GRANT EXECUTE 
+    TO Admin;
+GO
+
+CREATE PROCEDURE DeleteMenuItem
+    @MenuID INT,
+	@name VARCHAR(255), 
+    @Category VARCHAR(255),
+    @price float
+AS
+begin
+	delete from menu
+	where menuID=@MenuID
+end
+create procedure GenerateBill
+as
+begin
+select b.* from Bills b
+
+inner join orders o on b.OrderID=o.OrderID
+where o.status='complete';
+end;
+CREATE PROCEDURE GetOrderHistory
+	@orderDate date
+AS
+begin
+	 select * from orders
+	 where orderDate=@orderDate;
+end;
+CREATE PROCEDURE UpdateMenuItem
+    @MenuID INT,
+	@name VARCHAR(255), 
+    @Category VARCHAR(255),
+    @price float
+AS
+BEGIN
+    UPDATE Menu
+    SET 
+        name = @name,
+        category = @Category,
+        price = @price
+    WHERE MenuID = @MenuID
+end
+CREATE PROCEDURE UpdateOrder
+	@orderID int,
+	@tableID INT,
+	@menuID INT,
+	@staffID INT,
+	@orderDate date,
+	@status varchar(255)
+AS
+begin
+update Orders
+set
+	 tableID=@tableID,
+	 menuID=@menuID,
+	 staffID=@staffID,
+	 orderDate=@orderDate,
+	 status=@status
+	 where orderID=@orderID;
+end;
+CREATE PROCEDURE UpdateRolee
+	@staffID int,
+	@role varchar(255)
+AS
+begin
+update Staff
+set
+	 role=@role,
+	 where staffID=@staffID;
+end;
